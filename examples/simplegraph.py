@@ -18,12 +18,12 @@ g.factor(['b', 'a'], potential=np.array([
 
 # Run (loopy) belief propagation (LBP)
 iters, converged = g.lbp(normalize=True)
-print 'LBP ran for %d iterations. Converged = %r' % (iters, converged)
-print
+print(f"LBP rand for {iters} iterations. Converged = {converged}")
+print()
 
 # Print out the final messages from LBP
 g.print_messages()
-print
+print()
 
 # Print out the final marginals
 g.print_rv_marginals()

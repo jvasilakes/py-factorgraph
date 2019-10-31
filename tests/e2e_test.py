@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 End-to-end tests of factor graph construction and loopy belief propagation.
 
@@ -14,7 +12,7 @@ author: mbforbes
 import numpy as np
 
 # Local
-from .context import factorgraph as fg
+from context import factorgraph as fg
 
 
 # Helpers
@@ -31,19 +29,19 @@ def compare_marginals_to_ref(g, ref):
     """
     # run lbp
     iters, converged = g.lbp(normalize=True)
-    assert converged, 'LBP did not converge!'
+    assert converged == True, 'LBP did not converge!'
 
     # get marginals and stringify (uses names)
     marginals = {str(rv): vals for rv, vals in g.rv_marginals(normalize=True)}
 
     # check all values in reference match those in the computed marginals
-    for var_name, values in ref.iteritems():
+    for var_name, values in ref.items():
         for i in range(len(values)):
             assert np.isclose(values[i], marginals[var_name][i])
 
     # to ensure extra values aren't prodcued, check the reverse: that all
     # values in computed marginals match those in the reference
-    for var_name, values in marginals.iteritems():
+    for var_name, values in marginals.items():
         for i in range(len(values)):
             assert np.isclose(values[i], marginals[var_name][i])
 
@@ -196,3 +194,8 @@ def test_pyfac_testgraph():
 
     # heavy lifting (lbp, marginals, reference comparison)
     compare_marginals_to_ref(g, ref)
+
+
+if __name__ == "__main__":
+    test_pyfac_testgraph()
+    test_pyfac_toygraph()

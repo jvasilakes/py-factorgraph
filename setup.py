@@ -9,7 +9,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
     ],
     keywords='factorgraph factor graph loopy belief propagation lbp sum product',
     packages=['factorgraph'],

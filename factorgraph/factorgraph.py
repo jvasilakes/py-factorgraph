@@ -41,7 +41,6 @@ author: mbforbes
 # -----------------------------------------------------------------------------
 
 # Builtins
-import code  # code.interact(local=dict(globals(), **locals()))
 import logging
 import signal
 
@@ -78,6 +77,8 @@ def signal_handler(signal, frame):
     logger.info('Ctrl-C pressed; stopping early...')
     global E_STOP
     E_STOP = True
+
+
 signal.signal(signal.SIGINT, signal_handler)
 
 
@@ -227,11 +228,11 @@ class Graph(object):
         # Look up RVs if needed.
         for i in range(len(rvs)):
             if debug:
-                assert type(rvs[i]) in [str, unicode, RV]
-            if type(rvs[i]) in [str, unicode]:
+                assert isinstance(rvs[i], (str, RV))
+            if isinstance(rvs[i], str):
                 rvs[i] = self._rvs[rvs[i]]
             # This is just a coding sanity check.
-            assert type(rvs[i]) is RV
+            assert isinstance(rvs[i], RV)
 
         f = Factor(rvs, name, potential, meta, debug)
         self.add_factor(f)
@@ -268,12 +269,12 @@ class Graph(object):
 
         For a probability, we use the normalization constant 1/Z
 
-            p(x) = 1/Z \product_a^{1..m} f_a(x_a)
+            p(x) = 1/Z \product_a^{1..m} f_a(x_a)  # noqa W605 invalid escape sequence
 
         If we don't care what the normalization is, we just write this without
         1/Z:
 
-            p(x) = \product_a^{1..m} f_a(x_a)
+            p(x) = \product_a^{1..m} f_a(x_a)  # noqa W605 invalid escape sequence
 
         This is currently implemented without normalization. I might want to
         add it in the future. I don't know yet.
@@ -288,12 +289,12 @@ class Graph(object):
             assert len(x) == len(self._rvs)
 
             # check that each assignment is valid (->)
-            for name, label in x.iteritems():
+            for name, label in x.items():
                 assert name in self._rvs
                 assert self._rvs[name].has_label(label)
 
             # check that each RV has a valid assignment (<-)
-            for name, rv in self._rvs.iteritems():
+            for name, rv in self._rvs.items():
                 assert name in x
                 assert rv.has_label(x[name])
 
@@ -320,7 +321,7 @@ class Graph(object):
         Returns:
             ({str: int}, float)
         '''
-        return self._bf_bj_recurse({}, self._rvs.values())
+        return self._bf_bj_recurse({}, list(self._rvs.values()))
 
     def _bf_bj_recurse(self, assigned, todo):
         '''
@@ -412,7 +413,7 @@ class Graph(object):
         Returns
             [RV|Factor] sorted by # edges
         '''
-        rvs = self._rvs.values()
+        rvs = list(self._rvs.values())
         facs = self._factors
         nodes = rvs + facs
         return sorted(nodes, key=lambda x: x.n_edges())
@@ -430,7 +431,7 @@ class Graph(object):
             n.init_lbp()
 
     def print_sorted_nodes(self):
-        print self._sorted_nodes()
+        print(self._sorted_nodes())
 
     def print_messages(self, nodes=None):
         '''
@@ -441,7 +442,7 @@ class Graph(object):
         '''
         if nodes is None:
             nodes = self._sorted_nodes()
-        print 'Current outgoing messages:'
+        print('Current outgoing messages:')
         for n in nodes:
             n.print_messages()
 
@@ -467,7 +468,6 @@ class Graph(object):
         tuples = []
         for rv in rvs:
             # Compute marginal
-            name = str(rv)
             marg, _ = rv.get_belief()
             if normalize:
                 marg /= sum(marg)
@@ -493,19 +493,19 @@ class Graph(object):
         if normalize:
             disp += ' (normalized)'
         disp += ':'
-        print disp
+        print(disp)
 
         # Extract
         tuples = self.rv_marginals(rvs, normalize)
 
         # Display
         for rv, marg in tuples:
-            print str(rv)
+            print(str(rv))
             vals = range(rv.n_opts)
             if len(rv.labels) > 0:
                 vals = rv.labels
             for i in range(len(vals)):
-                print '\t', vals[i], '\t', marg[i]
+                print('\t', vals[i], '\t', marg[i])
 
     def debug_stats(self):
         logger.debug('Graph stats:')
@@ -530,7 +530,7 @@ class RV(object):
         if debug:
             # labels must be [str] if provided
             for l in labels:
-                assert type(l) in [str, unicode]
+                assert isinstance(l, str)
 
             # must have n_opts labels if provided
             assert len(labels) == 0 or len(labels) == n_opts
@@ -582,7 +582,7 @@ class RV(object):
         Displays the current outgoing messages for this RV.
         '''
         for i, f in enumerate(self._factors):
-            print '\t', self, '->', f, '\t', self._outgoing[i]
+            print('\t', self, '->', f, '\t', self._outgoing[i])
 
     def recompute_outgoing(self, normalize=False):
         '''
@@ -676,13 +676,13 @@ class RV(object):
         if len(self.labels) == 0:
             # Tracking ints only. Provided label must be int.
             if self.debug:
-                assert type(label) is int
+                assert isinstance(label, int)
             return label < self.n_opts
         else:
             # Tracking strs only. Provided label can be int or str.
             if self.debug:
-                assert type(label) in [int, str, unicode]
-            if type(label) in [str, unicode]:
+                assert isinstance(label, (int, str))
+            if isinstance(label, str):
                 return label in self.labels
             # Default: int
             return label < self.n_opts
@@ -703,7 +703,7 @@ class RV(object):
         returns
             int
         '''
-        if type(label) is int:
+        if isinstance(label, int):
             return label
         # assume string otherwise
         return self.labels.index(label)
@@ -868,7 +868,7 @@ class Factor(object):
 
         # Divide out individual belief and (Sum:) add for marginal.
         convg = True
-        all_idx = range(len(belief.shape))
+        all_idx = list(range(len(belief.shape)))
         for i, rv in enumerate(self._rvs):
             rv_belief = divide_safezero(belief, incoming[i])
             axes = tuple(all_idx[:i] + all_idx[i+1:])
@@ -889,7 +889,7 @@ class Factor(object):
         Displays the current outgoing messages for this Factor.
         '''
         for i, rv in enumerate(self._rvs):
-            print '\t', self, '->', rv, '\t', self._outgoing[i]
+            print('\t', self, '->', rv, '\t', self._outgoing[i])
 
     def attach(self, rv):
         '''
@@ -1039,6 +1039,6 @@ class Factor(object):
 
         # should return a single number
         if self.debug:
-            assert type(ret) is not np.ndarray
+            assert not isinstance(ret, np.ndarray)
 
         return ret
