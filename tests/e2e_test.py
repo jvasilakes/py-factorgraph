@@ -12,7 +12,7 @@ author: mbforbes
 import numpy as np
 
 # Local
-from context import factorgraph as fg
+from .context import factorgraph as fg
 
 
 # Helpers
