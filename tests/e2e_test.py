@@ -29,7 +29,7 @@ def compare_marginals_to_ref(g, ref):
     """
     # run lbp
     iters, converged = g.lbp(normalize=True)
-    assert converged == True, 'LBP did not converge!'
+    assert converged is True, 'LBP did not converge!'
 
     # get marginals and stringify (uses names)
     marginals = {str(rv): vals for rv, vals in g.rv_marginals(normalize=True)}
