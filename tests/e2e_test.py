@@ -12,7 +12,7 @@ author: mbforbes
 import numpy as np
 
 # Local
-from context import factorgraph as fg
+from .context import factorgraph as fg
 
 
 # Helpers
@@ -194,8 +194,3 @@ def test_pyfac_testgraph():
 
     # heavy lifting (lbp, marginals, reference comparison)
     compare_marginals_to_ref(g, ref)
-
-
-if __name__ == "__main__":
-    test_pyfac_testgraph()
-    test_pyfac_toygraph()
