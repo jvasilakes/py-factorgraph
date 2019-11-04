@@ -12,7 +12,7 @@ author: mbforbes
 import numpy as np
 
 # Local
-from .context import factorgraph as fg
+from context import factorgraph as fg
 
 
 # Helpers
@@ -29,7 +29,7 @@ def compare_marginals_to_ref(g, ref):
     """
     # run lbp
     iters, converged = g.lbp(normalize=True)
-    assert converged is True, 'LBP did not converge!'
+    assert converged, 'LBP did not converge!'
 
     # get marginals and stringify (uses names)
     marginals = {str(rv): vals for rv, vals in g.rv_marginals(normalize=True)}
