@@ -1,8 +1,8 @@
 # py-factorgraph
 
-[![Build Status](https://travis-ci.org/mbforbes/py-factorgraph.svg?branch=master)](https://travis-ci.org/mbforbes/py-factorgraph)
-[![Coverage Status](https://coveralls.io/repos/github/mbforbes/py-factorgraph/badge.svg?branch=master)](https://coveralls.io/github/mbforbes/py-factorgraph?branch=master)
-[![license MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mbforbes/py-factorgraph/blob/master/LICENSE.txt)
+[![Build Status](https://travis-ci.org/jvasilakes/py-factorgraph.svg?branch=master)](https://travis-ci.org/jvasilakes/py-factorgraph)
+[![Coverage Status](https://coveralls.io/repos/github/jvasilakes/py-factorgraph/badge.svg?branch=master)](https://coveralls.io/github/jvasilakes/py-factorgraph?branch=master)
+[![license MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jvasilakes/py-factorgraph/blob/master/LICENSE.txt)
 
 This is a tiny python library that allows you to build factor graphs and run
 the (loopy) belief propagation algorithm with ease. It depends only on
