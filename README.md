@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jvasilakes/py-factorgraph.svg?branch=master)](https://travis-ci.org/jvasilakes/py-factorgraph)
 [![Coverage Status](https://coveralls.io/repos/github/jvasilakes/py-factorgraph/badge.svg?branch=master)](https://coveralls.io/github/jvasilakes/py-factorgraph?branch=master)
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 [![license MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jvasilakes/py-factorgraph/blob/master/LICENSE.txt)
 
 This is a tiny python library that allows you to build factor graphs and run
@@ -11,7 +12,7 @@ the (loopy) belief propagation algorithm with ease. It depends only on
 ## Installation
 
 ```bash
-pip install factorgraph
+pip install .
 ```
 
 ## Example
@@ -39,12 +40,12 @@ g.factor(['b', 'a'], potential=np.array([
 
 # Run (loopy) belief propagation (LBP)
 iters, converged = g.lbp(normalize=True)
-print 'LBP ran for %d iterations. Converged = %r' % (iters, converged)
-print
+print(f"LBP ran for {iters} iterations. Converged = {converged}")
+print()
 
 # Print out the final messages from LBP
 g.print_messages()
-print
+print()
 
 # Print out the final marginals
 g.print_rv_marginals()
