@@ -269,12 +269,12 @@ class Graph(object):
 
         For a probability, we use the normalization constant 1/Z
 
-            p(x) = 1/Z \product_a^{1..m} f_a(x_a)  # noqa W605 invalid escape sequence
+            p(x) = 1/Z product_a^{1..m} f_a(x_a)
 
         If we don't care what the normalization is, we just write this without
         1/Z:
 
-            p(x) = \product_a^{1..m} f_a(x_a)  # noqa W605 invalid escape sequence
+            p(x) = product_a^{1..m} f_a(x_a)
 
         This is currently implemented without normalization. I might want to
         add it in the future. I don't know yet.
